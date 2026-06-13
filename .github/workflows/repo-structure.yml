@@ -1,0 +1,77 @@
+# Reusable org workflow: repo structure-lock (Rollingcat-Software/FIVUCSAS#209).
+#
+# An ArchUnit-style FREEZE of a repo's root file/folder layout. Any repo in the
+# org adds a thin caller that invokes this on pull_request:
+#
+#   # .github/workflows/structure-check.yml in the consuming repo
+#   name: structure-check
+#   on:
+#     pull_request:
+#   jobs:
+#     repo-structure:
+#       uses: Rollingcat-Software/.github/.github/workflows/repo-structure.yml@main
+#
+# The job checks out the CALLER repo plus this .github repo (for the check
+# script), then runs the stdlib-only checker against the caller's
+# .repo-structure.yml policy. It FAILS (red check) on any layout drift.
+#
+# Make it bite: add the resulting status check (job name "structure-check") as a
+# REQUIRED check in each repo's branch protection — see the FIVUCSAS PR body.
+
+name: repo-structure (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      policy:
+        description: >-
+          Optional explicit policy path relative to the repo root. Defaults to
+          .repo-structure.yml then .github/repo-structure.yml.
+        required: false
+        type: string
+        default: ""
+      tools-ref:
+        description: >-
+          Ref of Rollingcat-Software/.github to fetch the check script from
+          (pin to a tag/SHA for reproducibility; defaults to the default branch).
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  structure-check:
+    name: structure-check
+    # GitHub-hosted on purpose: this is a tiny stdlib-only Python job, so it
+    # must NOT depend on the resource-constrained self-hosted Hetzner runner.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the calling repository
+        uses: actions/checkout@v4
+        with:
+          # Root-only scan: skip submodule content (each submodule runs its own
+          # structure-check). Submodule dirs still appear as entries to validate.
+          submodules: false
+          persist-credentials: false
+
+      - name: Fetch the structure-lock tooling (org .github repo)
+        uses: actions/checkout@v4
+        with:
+          repository: Rollingcat-Software/.github
+          ref: ${{ inputs.tools-ref }}
+          path: .repo-structure-tools
+          persist-credentials: false
+
+      - name: Run repo structure-lock
+        # Pass the input through env (never interpolate ${{ }} into the shell
+        # line) so a malformed policy path can't inject shell commands.
+        env:
+          POLICY: ${{ inputs.policy }}
+        run: |
+          if [ -n "$POLICY" ]; then
+            python3 .repo-structure-tools/tools/check_repo_structure.py --root . --policy "$POLICY"
+          else
+            python3 .repo-structure-tools/tools/check_repo_structure.py --root .
+          fi
