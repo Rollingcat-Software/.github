@@ -35,6 +35,13 @@ from dataclasses import dataclass, field
 
 DEFAULT_POLICY_NAMES = (".repo-structure.yml", ".github/repo-structure.yml")
 
+# Root entries that are never part of a repo's layout and must always be ignored:
+#   .git                    — the git dir
+#   .repo-structure-tools   — where the reusable workflow checks out THIS tooling
+#                             repo into the scanned workspace (else the gate would
+#                             flag its own checkout as a disallowed dir).
+ALWAYS_IGNORED = frozenset({".git", ".repo-structure-tools"})
+
 # Recognised policy keys. Anything else in the policy file is an error so typos
 # (e.g. ``allowed_root_file:``) surface loudly instead of silently doing nothing.
 KNOWN_KEYS = (
@@ -190,10 +197,10 @@ def find_policy(root: str, explicit: str | None) -> str:
 
 
 def list_root_entries(root: str) -> list[tuple[str, bool]]:
-    """Return ``(name, is_dir)`` for each top-level entry, excluding ``.git``."""
+    """Return ``(name, is_dir)`` for each top-level entry, minus ALWAYS_IGNORED."""
     entries = []
     for name in sorted(os.listdir(root)):
-        if name == ".git":
+        if name in ALWAYS_IGNORED:
             continue
         is_dir = os.path.isdir(os.path.join(root, name))
         entries.append((name, is_dir))

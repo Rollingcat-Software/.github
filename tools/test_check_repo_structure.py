@@ -96,6 +96,13 @@ class CheckTests(unittest.TestCase):
         root = make_repo({"README.md": "", "LICENSE": "", ".git": True})
         self.assertEqual(c.check(root, self.policy), [])
 
+    def test_tooling_checkout_dir_ignored(self):
+        # The reusable workflow checks the tools repo out here; never flag it.
+        root = make_repo(
+            {"README.md": "", "LICENSE": "", ".repo-structure-tools": True}
+        )
+        self.assertEqual(c.check(root, self.policy), [])
+
     def test_fix_only_moves_forbidden_files_not_dirs(self):
         root = make_repo(
             {"README.md": "", "LICENSE": "", "TODO.md": "", "weird": True, "stray.txt": ""}
