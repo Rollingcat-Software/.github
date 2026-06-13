@@ -1,8 +1,14 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
-  - name: Security vulnerability
+  - name: Report a vulnerability (private Security Advisory)
+    url: https://github.com/Rollingcat-Software/FIVUCSAS/security/advisories/new
+    about: These repos are PUBLIC and live. Report security vulnerabilities privately via a GitHub Security Advisory — never open a public issue.
+  - name: Security policy
     url: https://github.com/Rollingcat-Software/.github/blob/main/SECURITY.md
-    about: Please report security issues privately — do not open a public issue.
+    about: How we handle vulnerability reports and disclosure.
+  - name: Design Q&A (Discussions)
+    url: https://github.com/Rollingcat-Software/FIVUCSAS/discussions
+    about: Open-ended design and architecture questions go to Discussions, not issues.
   - name: Documentation
     url: https://github.com/Rollingcat-Software/docs
     about: Product and architecture documentation.

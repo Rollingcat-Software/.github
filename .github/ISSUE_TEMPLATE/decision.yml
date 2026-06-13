@@ -1,0 +1,62 @@
+name: Decision (recommend-first)
+description: A design / product / destructive choice that needs an owner decision before action
+title: "[decision] "
+labels: ["decision/recommend-first"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for choices that are **DESIGN / product-shaping or destructive/irreversible**
+        (history rewrites, data deletion, architecture forks, policy). Per the standing
+        convention these are recommend-first: lay out the options and a recommendation; the
+        owner decides before any irreversible action.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - identity
+        - web
+        - bio
+        - spoof
+        - mobile
+        - infra
+        - docs
+        - cross-cutting
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What is the situation, and why is a decision needed now?
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options
+      description: Enumerate the viable options with trade-offs.
+      placeholder: |
+        A. ...
+        B. ...
+        C. do nothing
+    validations:
+      required: true
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: Recommendation
+      description: Which option do you recommend, and why?
+    validations:
+      required: false
+  - type: dropdown
+    id: reversible
+    attributes:
+      label: Reversibility / blast radius
+      options:
+        - Reversible (flag / config, no data loss)
+        - Destructive but recoverable (backup exists)
+        - Irreversible (history rewrite / data deletion)
+    validations:
+      required: true

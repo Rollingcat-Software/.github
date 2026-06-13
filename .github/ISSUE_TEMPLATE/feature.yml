@@ -1,0 +1,56 @@
+name: Feature
+description: Propose a new capability or enhancement
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - identity (identity-core-api — Spring/Java)
+        - web (web-app — React dashboard + hosted login)
+        - bio (biometric-processor — FastAPI/Python)
+        - spoof (spoof-detector / amispoof PAD)
+        - mobile (client-apps — Kotlin Multiplatform)
+        - infra (CI/CD / deploy / Traefik / host ops)
+        - docs (docs site, landing, thesis, READMEs)
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What user problem or product gap does this solve? Lead with UX / integration impact.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would you build? Include integration snippet / end-user UX where relevant.
+    validations:
+      required: true
+  - type: dropdown
+    id: gpuless
+    attributes:
+      label: CPU-only (GPU-less) constraint?
+      description: Does this depend on a model/build/deploy that the CPU-only Hetzner host constrains?
+      options:
+        - "No"
+        - "Yes — add the gpuless label"
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: checkboxes
+    id: flag
+    attributes:
+      label: Reversibility
+      options:
+        - label: This touches a core/auth path and should ship feature-flagged (default OFF = legacy)
+          required: false
