@@ -1,0 +1,3 @@
+# Org-wide default code owners (Rollingcat-Software/.github = org default).
+# A per-repo .github/CODEOWNERS overrides this for that repo if ever needed.
+* @ahmetabdullahgultekin

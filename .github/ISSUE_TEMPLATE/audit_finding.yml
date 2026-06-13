@@ -1,0 +1,71 @@
+name: Audit finding
+description: A verified finding from a code/security/architecture review or audit
+title: "[audit] "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For findings surfaced by a review/audit. **If the finding is an exploitable
+        vulnerability** (auth bypass, injection, secret exposure, IDOR, SSRF, privilege
+        escalation) on these public+live repos, do NOT file it here — use the "Report a
+        vulnerability" link (private GitHub Security Advisory).
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - identity
+        - web
+        - bio
+        - spoof
+        - mobile
+        - infra
+        - docs
+        - cross-cutting
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity (as assessed by the review)
+      options:
+        - P1 (high — fix soon)
+        - P2 (medium — backlog)
+        - P3 (low — nice to have)
+        - decision (needs an owner call)
+    validations:
+      required: true
+  - type: textarea
+    id: finding
+    attributes:
+      label: Finding
+      description: What is wrong, where (file/symbol/path), and the impact.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification on current HEAD
+      description: How was this confirmed still-open? (grep the symptom on origin/main — don't trust a stale report.)
+    validations:
+      required: true
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Proposed remediation
+    validations:
+      required: false
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Maps to the cleanup/quality label taxonomy.
+      options:
+        - "correctness / hardening"
+        - "dead-code (verified-unused, slated for deletion)"
+        - "dry (DRY consolidation / dedup)"
+        - "infra-blocker (blocks go-live / deploy)"
+        - "gpuless (CPU-only host constraint)"
+    validations:
+      required: false

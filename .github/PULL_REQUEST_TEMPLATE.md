@@ -1,8 +1,9 @@
 ## Summary
 <!-- What does this PR do, and why? -->
 
-## Related issues
-<!-- e.g. Closes #123 -->
+## Related issue
+<!-- Required: link the board issue this closes. -->
+Fixes #
 
 ## Type of change
 - [ ] Bug fix
@@ -13,6 +14,9 @@
 
 ## Checklist
 - [ ] Conventional Commit title (`feat:`, `fix:`, `docs:`, `chore:`, ...)
-- [ ] Tests added/updated and passing locally
+- [ ] Tests pass locally (and added/updated where behavior changed)
+- [ ] Docs updated if behavior changed (CLAUDE.md / README / runbook)
+- [ ] Risky / core-path change is flag-gated (default OFF = legacy) and reversible
 - [ ] No secrets, build output, or large binaries committed
-- [ ] Docs updated if behavior changed
+- [ ] No AI-attribution trailer (no `Co-Authored-By:` / `Generated with` lines)
+- [ ] `Closes`/`Fixes #` is linked so the board card auto-moves to Done
