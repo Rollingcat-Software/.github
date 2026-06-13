@@ -1,0 +1,32 @@
+# Repo structure-lock policy — org .github repo (Rollingcat-Software/FIVUCSAS#209).
+#
+# This repo hosts the reusable workflow + check script, so it also eats its own
+# dog food: the frozen root below is enforced by structure-check.yml, which calls
+# repo-structure.yml against this very repo. See tools/check_repo_structure.py.
+#
+# To add a NEW root entry, list it here in the SAME PR (the reviewed "unfreeze").
+
+allowed_root_files:
+  - "CODE_OF_CONDUCT.md"
+  - "CONTRIBUTING.md"
+  - "README.md"
+  - "SECURITY.md"
+  - "SUPPORT.md"
+  - ".gitignore"
+  - ".pre-commit-hooks.yaml"
+  - ".repo-structure.yml"
+
+allowed_root_dirs:
+  - ".github"   # community-health files, issue templates, reusable workflows
+  - "profile"   # org profile/README.md
+  - "tools"     # check_repo_structure.py + its tests
+
+# Dated / tracking-doc names that must NEVER reappear at the root (single-quoted
+# so backslashes stay literal for the regex engine). Tracking goes in issues.
+forbidden_root_patterns:
+  - '.*_(AUDIT|REVIEW|FINDINGS|REGISTER|TRIAGE|SWEEP|STATUS|SESSION|RECONCILIATION)_.*\.md$'
+  - '.*_\d{4}-\d{2}-\d{2}.*\.md$'
+  - '^(TODO|ROADMAP|BACKLOG|OPERATOR_TODO|PERSONAL_TODO).*\.md$'
+
+required_files:
+  - "README.md"

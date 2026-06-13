@@ -1,0 +1,12 @@
+# Self-check: the org .github repo enforces its own root layout via the reusable
+# structure-lock workflow it ships (Rollingcat-Software/FIVUCSAS#209).
+name: structure-check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  repo-structure:
+    uses: ./.github/workflows/repo-structure.yml

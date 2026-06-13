@@ -1,0 +1,22 @@
+# Pre-commit hook definitions exported by the org .github repo so any repo can
+# run the structure-lock locally (Rollingcat-Software/FIVUCSAS#209):
+#
+#   # .pre-commit-config.yaml in the consuming repo
+#   - repo: https://github.com/Rollingcat-Software/.github
+#     rev: main                       # pin to a tag/SHA for reproducibility
+#     hooks:
+#       - id: repo-structure
+#
+# The hook runs once per commit (not per-file) and scans the repo root against
+# that repo's .repo-structure.yml. Stdlib-only — no extra dependencies.
+- id: repo-structure
+  name: repo structure-lock
+  description: Freeze the repo root layout; block stray/dated tracking docs.
+  # language: script runs the checked-out script file directly (no venv/install,
+  # no third-party deps). pre-commit runs it from the consuming repo's root, so
+  # --root . scans the right tree.
+  entry: tools/check_repo_structure.py
+  args: ["--root", "."]
+  language: script
+  pass_filenames: false
+  always_run: true
